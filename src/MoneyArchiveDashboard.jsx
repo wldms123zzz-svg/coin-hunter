@@ -287,7 +287,7 @@ export default function MoneyArchiveDashboard() {
           <span style={{ fontSize:13, color:"#8B95A1", fontWeight:500 }}>내 컬렉션</span>
           <span style={{ fontSize:14, fontWeight:900, color:"#191F28" }}>{foundIds.length}</span>
           <span style={{ fontSize:13, color:"#D1D6DB" }}>/</span>
-          <span style={{ fontSize:13, color:"#8B95A1" }}>{COINS.length}개 해금</span>
+          <span style={{ fontSize:13, color:"#8B95A1" }}>{COINS.length}개 아이템 해제하기</span>
         </div>
       </div>
 
