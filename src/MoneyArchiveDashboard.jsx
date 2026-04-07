@@ -42,11 +42,7 @@ const PastelFront = ({ coin, size }) => (
     <circle cx="100" cy="100" r="88" fill="none" stroke={coin.pastelDark} strokeWidth="2.5" opacity="0.6"/>
     <circle cx="100" cy="100" r="74" fill="none" stroke={coin.pastelDark} strokeWidth="1.5" opacity="0.35"/>
     <ellipse cx="78" cy="62" rx="24" ry="11" fill="rgba(255,255,255,0.65)" transform="rotate(-20 78 62)"/>
-    <text x="100" y="88" textAnchor="middle" fontSize="38" dominantBaseline="middle">{coin.icon}</text>
-    <text x="100" y="130" textAnchor="middle" fontSize="40" fontWeight="900"
-      fontFamily="'Pretendard',system-ui,sans-serif" fill={coin.gradeColor} opacity="0.9" letterSpacing="-1">{coin.denom}</text>
-    <text x="100" y="158" textAnchor="middle" fontSize="13" fontWeight="600" letterSpacing="2"
-      fontFamily="'Pretendard',system-ui,sans-serif" fill={coin.gradeColor} opacity="0.5">원</text>
+    <text x="100" y="105" textAnchor="middle" fontSize="64" dominantBaseline="middle">{coin.icon}</text>
   </svg>
 );
 
@@ -206,7 +202,8 @@ export default function MoneyArchiveDashboard() {
           onClick={() => !scanning && fileRef.current?.click()}
           style={{ width:"100%", height:56, borderRadius:16,
             background: scanning ? "#D1D6DB" : "#3182F6",
-            border:"none", color:"#fff", fontSize:16, fontWeight:700, cursor: scanning ? "not-allowed" : "pointer",
+            border:"none", color:"#fff", fontSize:16, fontWeight:700,
+            cursor: scanning ? "not-allowed" : "pointer",
             boxShadow: scanning ? "none" : "0 6px 20px rgba(49,130,246,0.32)",
             display:"flex", alignItems:"center", justifyContent:"center", gap:8 }}
           onMouseDown={e => { if(!scanning) e.currentTarget.style.background="#1B64DA"; }}
