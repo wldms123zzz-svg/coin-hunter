@@ -1,12 +1,3 @@
-import { TDSMobileAITProvider } from '@toss/tds-mobile-ait';
- 
-function App({ Component, pageProps }) {
-  return (
-    <TDSMobileAITProvider>
-      <Component {...pageProps} />
-    </TDSMobileAITProvider>
-  );
-}
 import { useState, useRef } from “react”;
 
 // ─── DB ───────────────────────────────────────────────────────────────────────
