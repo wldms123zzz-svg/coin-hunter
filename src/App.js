@@ -1,5 +1,5 @@
 import React from 'react';
-import MoneyArchiveDashboard from './MoneyArchiveDashboard';
+import MoneyArchiveDashboard from './MoneyArchiveDashboard.jsx
 
 function App() {
   return (
