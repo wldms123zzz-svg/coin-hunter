@@ -12,6 +12,8 @@ const App = () => <Button>버튼</Button>;
 
 
 
+import { useState, useRef } from "react";
+
 // ─── DB ───────────────────────────────────────────────────────────────────────
 const GOLD_COLORS = {
   pastel: "#FFF9C4",     // 밝은 황금빛
@@ -198,7 +200,7 @@ const Modal = ({ result, onClose }) => (
             <div style={{ textAlign:"center" }}>
               <div style={{ fontSize:12, fontWeight:700, color:result.coin.gradeColor, marginBottom:5, letterSpacing:0.3 }}>🎉 희귀 동전 발견!</div>
               <div style={{ fontSize:22, fontWeight:900, color:"#191F28", letterSpacing:-0.5 }}>
-                {result.coin.year}년 {result.coin.denom}원
+                이 가치를 확인해 보세요
               </div>
               <div style={{ fontSize:14, color:"#8B95A1", marginTop:6 }}>
                 최대 <span style={{ color:result.coin.gradeColor, fontWeight:700 }}>{result.coin.price.toLocaleString()}원</span> 가치
@@ -281,13 +283,13 @@ export default function MoneyArchiveDashboard() {
         {/* Texts */}
         <div style={{ textAlign:"center", width:"100%" }}>
           <div style={{ fontSize:12, color:"#B0B8C1", fontWeight:600, letterSpacing:0.4, marginBottom:8 }}>
-            1998년 500원 현재 시세
+            희귀 동전 수집 가치
           </div>
           <div style={{ fontSize:26, fontWeight:900, color:"#3182F6", letterSpacing:-1, lineHeight:1.2, marginBottom:8 }}>
-            지갑 속에 오백만원이?
+            지갑 속에 숨겨진 보물이?
           </div>
           <div style={{ fontSize:14, color:"#8B95A1", lineHeight:1.7 }}>
-            단 <strong style={{ color:"#191F28", fontWeight:800 }}>8,000개</strong>만 발행된 전설의 동전<br/>
+            수많은 동전 중 특별한 가치를 지닌 보물<br/>
             지금 내 지갑에 있을 수도 있어요
           </div>
         </div>
