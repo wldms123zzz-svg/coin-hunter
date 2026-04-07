@@ -5,15 +5,7 @@ import { colors } from '@toss/tds-colors';
  
 <div style={{ width:100, height:100, backgroundColor: colors.blue500 }} />
 import { useState, useRef } from "react";
-import { TDSMobileAITProvider } from '@toss/tds-mobile-ait';
- 
-function App({ Component, pageProps }) {
-  return (
-    <TDSMobileAITProvider>
-      <Component {...pageProps} />
-    </TDSMobileAITProvider>
-  );
-}
+
 import { Button } from '@toss/tds-mobile';
  
 const App = () => <Button>버튼</Button>;
