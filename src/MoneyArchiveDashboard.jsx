@@ -1,14 +1,14 @@
 import { useState, useRef } from "react";
 
 const COINS = [
-  { id:"c1", year:1998, denom:500, grade:"전설", gradeColor:"#FF8A65", price:5000000 },
-  { id:"c2", year:1966, denom:10,  grade:"희귀", gradeColor:"#9575CD", price:1000000 },
-  { id:"c3", year:1970, denom:100, grade:"레어", gradeColor:"#5C9BF5", price:150000  },
-  { id:"c4", year:1982, denom:500, grade:"레어", gradeColor:"#5C9BF5", price:80000   },
-  { id:"c5", year:2006, denom:10,  grade:"일반", gradeColor:"#90A4AE", price:5000    },
-  { id:"c6", year:1983, denom:50,  grade:"레어", gradeColor:"#5C9BF5", price:30000   },
-  { id:"c7", year:1991, denom:100, grade:"레어", gradeColor:"#5C9BF5", price:25000   },
-  { id:"c8", year:2001, denom:500, grade:"일반", gradeColor:"#90A4AE", price:3000    },
+  { id:"c1", year:1998, denom:500, grade:"전설", gradeColor:"#FF8A65", price:5000000, pastel:"#FFF9C4", pastelDark:"#FBC02D", icon:"🌟", iconBack:"🦅" },
+  { id:"c2", year:1966, denom:10,  grade:"희귀", gradeColor:"#9575CD", price:1000000, pastel:"#F3E5F5", pastelDark:"#CE93D8", icon:"🏛️", iconBack:"🕊️" },
+  { id:"c3", year:1970, denom:100, grade:"레어", gradeColor:"#5C9BF5", price:150000,  pastel:"#E3F2FD", pastelDark:"#90CAF9", icon:"⚓",  iconBack:"🌊" },
+  { id:"c4", year:1982, denom:500, grade:"레어", gradeColor:"#5C9BF5", price:80000,   pastel:"#E8F5E9", pastelDark:"#A5D6A7", icon:"🌿", iconBack:"🍃" },
+  { id:"c5", year:2006, denom:10,  grade:"일반", gradeColor:"#90A4AE", price:5000,    pastel:"#ECEFF1", pastelDark:"#B0BEC5", icon:"⭕", iconBack:"◯"  },
+  { id:"c6", year:1983, denom:50,  grade:"레어", gradeColor:"#5C9BF5", price:30000,   pastel:"#FFF8E1", pastelDark:"#FFE082", icon:"🌸", iconBack:"🌺" },
+  { id:"c7", year:1991, denom:100, grade:"레어", gradeColor:"#5C9BF5", price:25000,   pastel:"#FCE4EC", pastelDark:"#F48FB1", icon:"🎋", iconBack:"🎍" },
+  { id:"c8", year:2001, denom:500, grade:"일반", gradeColor:"#90A4AE", price:3000,    pastel:"#ECEFF1", pastelDark:"#CFD8DC", icon:"⭕", iconBack:"◯"  },
 ];
 
 const RARE_DB    = { 1998: COINS[0], 1966: COINS[1], 1970: COINS[2] };
@@ -28,49 +28,73 @@ const doShare = async (isSuccess) => {
   } catch(_){}
 };
 
-// ─── 실제 동전 이미지 컴포넌트 ───────────────────────────────────────────────
-const CoinImage = ({ size, spinning = true }) => (
-  <div style={{ width: size, height: size, perspective: size * 6 }}>
-    <div style={{
-      width: "100%", height: "100%",
+// ─── 파스텔 동전 앞면 (아이콘만, 숫자 없음) ──────────────────────────────────
+const PastelFront = ({ coin, size }) => (
+  <svg width={size} height={size} viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id={`pf${coin.id}`} cx="40%" cy="35%" r="65%">
+        <stop offset="0%"   stopColor="#fff" stopOpacity="0.95"/>
+        <stop offset="100%" stopColor={coin.pastel} stopOpacity="1"/>
+      </radialGradient>
+    </defs>
+    <circle cx="100" cy="100" r="96" fill={coin.pastelDark} opacity="0.45"/>
+    <circle cx="100" cy="100" r="88" fill={`url(#pf${coin.id})`}/>
+    <circle cx="100" cy="100" r="88" fill="none" stroke={coin.pastelDark} strokeWidth="2.5" opacity="0.6"/>
+    <circle cx="100" cy="100" r="74" fill="none" stroke={coin.pastelDark} strokeWidth="1.5" opacity="0.35"/>
+    <ellipse cx="78" cy="62" rx="24" ry="11" fill="rgba(255,255,255,0.65)" transform="rotate(-20 78 62)"/>
+    {/* 아이콘만, 숫자 없음 */}
+    <text x="100" y="105" textAnchor="middle" fontSize="64" dominantBaseline="middle">{coin.icon}</text>
+  </svg>
+);
+
+// ─── 파스텔 동전 뒷면 ────────────────────────────────────────────────────────
+const PastelBack = ({ coin, size }) => (
+  <svg width={size} height={size} viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id={`pb${coin.id}`} cx="60%" cy="35%" r="65%">
+        <stop offset="0%"   stopColor="#fff" stopOpacity="0.95"/>
+        <stop offset="100%" stopColor={coin.pastel} stopOpacity="1"/>
+      </radialGradient>
+    </defs>
+    <circle cx="100" cy="100" r="96" fill={coin.pastelDark} opacity="0.45"/>
+    <circle cx="100" cy="100" r="88" fill={`url(#pb${coin.id})`}/>
+    <circle cx="100" cy="100" r="88" fill="none" stroke={coin.pastelDark} strokeWidth="2.5" opacity="0.6"/>
+    <circle cx="100" cy="100" r="74" fill="none" stroke={coin.pastelDark} strokeWidth="1.5" opacity="0.35"/>
+    <ellipse cx="122" cy="62" rx="24" ry="11" fill="rgba(255,255,255,0.60)" transform="rotate(20 122 62)"/>
+    <text x="100" y="105" textAnchor="middle" fontSize="64" dominantBaseline="middle">{coin.iconBack}</text>
+    <text x="100" y="162" textAnchor="middle" fontSize="16" fontWeight="700" letterSpacing="2"
+      fontFamily="'Pretendard',system-ui,sans-serif" fill={coin.gradeColor} opacity="0.5">{coin.year}</text>
+  </svg>
+);
+
+// ─── 3D 회전 래퍼 ────────────────────────────────────────────────────────────
+const PastelCoin3D = ({ coin, size = 160, spinning = true }) => (
+  <div style={{ width:size, height:size, perspective: size*5 }}>
+    <div style={{ width:"100%", height:"100%", position:"relative", transformStyle:"preserve-3d",
       animation: spinning ? "coinSpin 5s linear infinite" : "none",
-      transformStyle: "preserve-3d",
-    }}>
-      {/* 앞면 */}
+      filter:"drop-shadow(0 8px 20px rgba(0,0,0,0.08))" }}>
       <div style={{ position:"absolute", inset:0, backfaceVisibility:"hidden" }}>
-        <img
-          src="/coin.png"
-          alt="엽전"
-          style={{ width:"100%", height:"100%", objectFit:"contain",
-            filter:"drop-shadow(0 8px 20px rgba(0,0,0,0.15))" }}
-        />
+        <PastelFront coin={coin} size={size}/>
       </div>
-      {/* 뒷면 (좌우 반전) */}
       <div style={{ position:"absolute", inset:0, backfaceVisibility:"hidden", transform:"rotateY(180deg)" }}>
-        <img
-          src="/coin.png"
-          alt="엽전 뒷면"
-          style={{ width:"100%", height:"100%", objectFit:"contain",
-            transform:"scaleX(-1)",
-            filter:"drop-shadow(0 8px 20px rgba(0,0,0,0.15)) brightness(0.92)" }}
-        />
+        <PastelBack coin={coin} size={size}/>
       </div>
     </div>
   </div>
 );
 
-// ─── 미니 동전 (그리드용) ────────────────────────────────────────────────────
-const MiniCoin = ({ found }) => (
-  <img
-    src="/coin.png"
-    alt="동전"
-    style={{
-      width: 52, height: 52, objectFit:"contain",
-      opacity: found ? 1 : 0.3,
-      filter: found ? "drop-shadow(0 2px 6px rgba(0,0,0,0.12))" : "grayscale(1)",
-      transition: "opacity 0.4s, filter 0.4s",
-    }}
-  />
+// ─── 미니 동전 ───────────────────────────────────────────────────────────────
+const MiniCoin = ({ coin, size=52, isFound=false }) => (
+  <div style={{ width:size, height:size, borderRadius:"50%", background:coin.pastelDark,
+    opacity: isFound ? 1 : 0.3, filter: isFound ? "none" : "grayscale(1)",
+    display:"flex", alignItems:"center", justifyContent:"center",
+    boxShadow:"0 4px 12px rgba(0,0,0,0.07)", flexShrink:0,
+    transition:"opacity 0.4s, filter 0.4s" }}>
+    <div style={{ width:size*0.82, height:size*0.82, borderRadius:"50%", background:coin.pastel,
+      display:"flex", alignItems:"center", justifyContent:"center" }}>
+      <span style={{ fontSize:size*0.36 }}>{coin.icon}</span>
+    </div>
+  </div>
 );
 
 const Badge = ({ label, color }) => (
@@ -80,8 +104,8 @@ const Badge = ({ label, color }) => (
 );
 
 const GridCoin = ({ coin, found }) => (
-  <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:5, padding:"10px 4px" }}>
-    <MiniCoin found={found}/>
+  <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:5, padding:"12px 4px" }}>
+    <MiniCoin coin={coin} size={52} isFound={found}/>
     <div style={{ textAlign:"center" }}>
       <div style={{ fontSize:11, fontWeight:700, color: found ? "#191F28" : "#C4CDD5" }}>{coin.year}년</div>
       <div style={{ fontSize:10, color:"#8B95A1" }}>{coin.denom}원</div>
@@ -128,15 +152,12 @@ export default function MoneyArchiveDashboard() {
       <div style={{ margin:"6px 16px 14px", background:"#fff", borderRadius:24,
         padding:"36px 24px 28px", display:"flex", flexDirection:"column", alignItems:"center", gap:22,
         boxShadow:"0 2px 16px rgba(0,0,0,0.05)" }}>
-
         <div style={{ display:"flex", flexDirection:"column", alignItems:"center" }}>
-          <CoinImage size={164} spinning/>
-          {/* 바닥 그림자 */}
-          <div style={{ width:90, height:14, marginTop:4,
-            background:"radial-gradient(ellipse, rgba(0,0,0,0.10) 0%, transparent 70%)",
+          <PastelCoin3D coin={COINS[0]} size={164} spinning/>
+          <div style={{ width:72, height:12, marginTop:6,
+            background:"radial-gradient(ellipse, rgba(0,0,0,0.08) 0%, transparent 70%)",
             borderRadius:"50%", animation:"shadowFloat 5s linear infinite" }}/>
         </div>
-
         <div style={{ textAlign:"center" }}>
           <div style={{ fontSize:12, color:"#B0B8C1", fontWeight:600, letterSpacing:0.4, marginBottom:8 }}>
             1998년 500원 현재 시세
@@ -149,7 +170,6 @@ export default function MoneyArchiveDashboard() {
             지금 내 지갑에 있을 수도 있어요
           </div>
         </div>
-
         <div style={{ background:"#F7F8FA", borderRadius:99, padding:"9px 22px",
           display:"flex", alignItems:"center", gap:6, border:"1px solid #EAECEF" }}>
           <span style={{ fontSize:13, color:"#8B95A1", fontWeight:500 }}>내 컬렉션</span>
@@ -164,7 +184,8 @@ export default function MoneyArchiveDashboard() {
         boxShadow:"0 2px 16px rgba(0,0,0,0.05)" }}>
         <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:18 }}>
           <span style={{ fontSize:15, fontWeight:800, color:"#191F28" }}>희귀 동전 컬렉션</span>
-          <span style={{ fontSize:12, color:"#B0B8C1" }}>스캔으로 해금</span>
+          {/* ✅ 스캔으로 아이템 해제 */}
+          <span style={{ fontSize:12, color:"#B0B8C1" }}>스캔으로 아이템 해제</span>
         </div>
         <div style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:"4px 0" }}>
           {COINS.map(coin => <GridCoin key={coin.id} coin={coin} found={foundIds.includes(coin.id)}/>)}
@@ -212,7 +233,7 @@ export default function MoneyArchiveDashboard() {
             <div style={{ textAlign:"center", marginBottom:24 }}>
               {scanResult.isRare ? (
                 <>
-                  <CoinImage size={120} spinning/>
+                  <PastelCoin3D coin={scanResult.coin} size={120} spinning/>
                   <div style={{ fontSize:13, fontWeight:700, color:scanResult.coin.gradeColor, marginTop:16, marginBottom:4 }}>
                     🎉 희귀 동전 발견!
                   </div>
@@ -252,7 +273,7 @@ export default function MoneyArchiveDashboard() {
 
       <style>{`
         @keyframes coinSpin    { from{transform:rotateY(0deg)} to{transform:rotateY(360deg)} }
-        @keyframes shadowFloat { 0%,100%{transform:scaleX(1);opacity:.8} 50%{transform:scaleX(.65);opacity:.35} }
+        @keyframes shadowFloat { 0%,100%{transform:scaleX(1);opacity:.8} 50%{transform:scaleX(.65);opacity:.4} }
         @keyframes sheetUp     { from{transform:translateY(100%)} to{transform:translateY(0)} }
         @keyframes spin        { to{transform:rotate(360deg)} }
       `}</style>
