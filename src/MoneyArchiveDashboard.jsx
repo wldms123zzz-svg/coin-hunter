@@ -1,5 +1,10 @@
 import { useState, useRef } from “react”;
-
+import { Button } from '@toss/tds-mobile';
+ 
+const App = () => <Button>버튼</Button>;
+import { colors } from '@toss/tds-colors';
+ 
+<div style={{ width:100, height:100, backgroundColor: colors.blue500 }} />
 // ─── DB ───────────────────────────────────────────────────────────────────────
 const COINS = [
 {
@@ -672,6 +677,4 @@ paddingBottom: 110,
 
 );
 }
-import { Button } from '@toss/tds-mobile';
- 
-const App = () => <Button>버튼</Button>;
+
