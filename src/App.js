@@ -1,4 +1,4 @@
-iimport React from 'react';
+import React from 'react';
 import MoneyArchiveDashboard from './MoneyArchiveDashboard.jsx';
 
 function App() {
