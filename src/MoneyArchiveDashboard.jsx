@@ -174,11 +174,23 @@ export default function MoneyArchiveDashboard() {
             {/* 헤더 */}
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "18px 22px 10px" }}>
                 <button
-                    onClick={() => window.history.back()}
+                    onClick={() => {
+                        // 1. 토스 앱 안에 있다면 토스 전용 닫기 실행
+                        if (window.toss && window.toss.close) {
+                            window.toss.close();
+                        }
+                        // 2. 혹시 일반 브라우저에서 테스트 중이라면 뒤로가기
+                        else {
+                            window.history.back();
+                        }
+                    }}
                     style={{
-                        width: 36, height: 36, borderRadius: "50%", background: "rgba(0,0,0,0.05)",
-                        border: "none", cursor: "pointer", fontSize: 16, fontWeight: 700
-                    }}>✕</button>
+                        width: 36, height: 36, borderRadius: "50%",
+                        background: "rgba(0,0,0,0.05)", border: "none",
+                        cursor: "pointer", fontSize: 16, fontWeight: 700
+                    }}>
+                    ✕
+                </button>
                 <span style={{ fontSize: 17, fontWeight: 700, color: "#191F28" }}>희귀 동전 찾기</span>
                 <div style={{ width: 36 }} />
             </div>
