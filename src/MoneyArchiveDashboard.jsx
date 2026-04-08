@@ -81,23 +81,7 @@ const doShare = async (isSuccess) => {
     else { await navigator.clipboard.writeText(text); alert("복사되었어요!"); }
   } catch (_) { }
 };
-// ─── 미니 동전 ───────────────────────────────────────────────────────────────
-const MiniCoin = ({ coin, size = 52, isFound = false }) => (
-  <div style={{
-    width: size, height: size, borderRadius: "50%", background: coin.pastelDark,
-    opacity: isFound ? 1 : 0.3, filter: isFound ? "none" : "grayscale(1)",
-    display: "flex", alignItems: "center", justifyContent: "center",
-    boxShadow: "0 4px 12px rgba(0,0,0,0.07)", flexShrink: 0,
-    transition: "opacity 0.4s, filter 0.4s"
-  }}>
-    <div style={{
-      width: size * 0.82, height: size * 0.82, borderRadius: "50%", background: coin.pastel,
-      display: "flex", alignItems: "center", justifyContent: "center"
-    }}>
-      <span style={{ fontSize: size * 0.36 }}>{coin.icon}</span>
-    </div>
-  </div>
-);
+
 
 const Badge = ({ label, color }) => (
   <span style={{ padding: "2px 8px", borderRadius: 99, fontSize: 10, fontWeight: 700, color: "#fff", background: color }}>
