@@ -64,23 +64,7 @@ const PastelBack = ({ coin, size }) => (
   </svg>
 );
 
-// ─── 3D 회전 래퍼 ────────────────────────────────────────────────────────────
-const PastelCoin3D = ({ coin, size = 160, spinning = true }) => (
-  <div style={{ width: size, height: size, perspective: size * 5 }}>
-    <div style={{
-      width: "100%", height: "100%", position: "relative", transformStyle: "preserve-3d",
-      animation: spinning ? "coinSpin 5s linear infinite" : "none",
-      filter: "drop-shadow(0 8px 20px rgba(0,0,0,0.08))"
-    }}>
-      <div style={{ position: "absolute", inset: 0, backfaceVisibility: "hidden" }}>
-        <PastelFront coin={coin} size={size} />
-      </div>
-      <div style={{ position: "absolute", inset: 0, backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}>
-        <PastelBack coin={coin} size={size} />
-      </div>
-    </div>
-  </div>
-);
+
 
 // ─── 미니 동전 ───────────────────────────────────────────────────────────────
 const MiniCoin = ({ coin, size = 52, isFound = false }) => (
@@ -200,14 +184,7 @@ export default function MoneyArchiveDashboard() {
         padding: "36px 24px 28px", display: "flex", flexDirection: "column", alignItems: "center", gap: 22,
         boxShadow: "0 2px 16px rgba(0,0,0,0.05)"
       }}>
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-          <PastelCoin3D coin={COINS[0]} size={164} spinning />
-          <div style={{
-            width: 72, height: 12, marginTop: 6,
-            background: "radial-gradient(ellipse, rgba(0,0,0,0.08) 0%, transparent 70%)",
-            borderRadius: "50%", animation: "shadowFloat 5s linear infinite"
-          }} />
-        </div>
+
         <div style={{ textAlign: "center" }}>
           <div style={{ fontSize: 12, color: "#B0B8C1", fontWeight: 600, letterSpacing: 0.4, marginBottom: 8 }}>
             1998년 500원 현재 시세
@@ -253,6 +230,28 @@ export default function MoneyArchiveDashboard() {
           ))}
         </div>
       </div>
+      
+      {/* 팁 안내 */}
+      <div style={{ textAlign: "center", margin: "20px 0 10px", color: "#8B95A1", fontSize: 13, fontWeight: 500 }}>
+        💡 팁: 동전의 빛 반사를 피해서 수평으로 찍어주세요.
+      </div>
+
+      {/* 이용 안내 및 주의사항 */}
+      <div style={{ margin: "32px 24px 20px", color: "#ADB5BD", fontSize: 12, lineHeight: 1.8 }}>
+        <div style={{ fontWeight: 700, marginBottom: 10, color: "#8B95A1", fontSize: 13 }}>이용 안내 및 주의사항</div>
+        <div style={{ display: "flex", gap: 6, marginBottom: 4 }}>
+          <span style={{ flexShrink: 0 }}>1.</span>
+          <span>탐색 범위: 본 서비스는 현재 8종의 주요 희귀 동전을 우선적으로 판별하고 있습니다.</span>
+        </div>
+        <div style={{ display: "flex", gap: 6, marginBottom: 4 }}>
+          <span style={{ flexShrink: 0 }}>2.</span>
+          <span>인식 정확도: AI 스캔 기술은 조명과 동전 상태에 따라 오차가 있을 수 있으므로, 참고용으로만 활용해주세요.</span>
+        </div>
+        <div style={{ display: "flex", gap: 6 }}>
+          <span style={{ flexShrink: 0 }}>3.</span>
+          <span>가치보증: 앱 내 표시된 시세는 시장 사황에 따른 참고 가격이며, 실제 가격은 보장하지 않습니다.</span>
+        </div>
+      </div>
 
       {/* FAB */}
       <input ref={fileRef} type="file" accept="image/*" capture="environment"
@@ -293,7 +292,7 @@ export default function MoneyArchiveDashboard() {
             <div style={{ textAlign: "center", marginBottom: 24 }}>
               {scanResult.isRare ? (
                 <>
-                  <PastelCoin3D coin={scanResult.coin} size={120} spinning />
+
                   <div style={{ fontSize: 13, fontWeight: 700, color: scanResult.coin.gradeColor, marginTop: 16, marginBottom: 4 }}>
                     🎉 희귀 동전 발견!
                   </div>
@@ -336,8 +335,7 @@ export default function MoneyArchiveDashboard() {
       )}
 
       <style>{`
-        @keyframes coinSpin    { from{transform:rotateY(0deg)} to{transform:rotateY(360deg)} }
-        @keyframes shadowFloat { 0%,100%{transform:scaleX(1);opacity:.8} 50%{transform:scaleX(.65);opacity:.4} }
+
         @keyframes sheetUp     { from{transform:translateY(100%)} to{transform:translateY(0)} }
         @keyframes spin        { to{transform:rotate(360deg)} }
       `}</style>
