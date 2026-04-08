@@ -34,7 +34,7 @@ const PastelFront = ({ coin, size }) => (
   </svg>
 );
 
-// ─── 파스텔 동전 뒷면 ────────────────────────────────────────────────────────
+// ─── 파스텔 동전 뒷면 (내부 구조 유지용) ────────────────────────────────────────
 const PastelBack = ({ coin, size }) => (
   <svg width={size} height={size} viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
     <defs>
@@ -53,6 +53,8 @@ const PastelBack = ({ coin, size }) => (
       fontFamily="'Pretendard',system-ui,sans-serif" fill={coin.gradeColor} opacity="0.5">{coin.year}</text>
   </svg>
 );
+
+
 const doShare = async (isSuccess) => {
   const text = isSuccess
     ? `${USER_NAME}님이 행운의 동전을 찾았어요! 지갑에 있는 가능성들을 확인해보시겠어요?`
@@ -88,14 +90,28 @@ const Badge = ({ label, color }) => (
 
 const GridCoin = ({ coin, found }) => (
   <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 5, padding: "12px 4px" }}>
-    <MiniCoin coin={coin} size={52} isFound={found} />
+    {/* 3D 회전을 위한 컨테이너 (여기에 앞뒤를 다 넣음) */}
+    <div style={{ 
+      position: "relative", width: 52, height: 52,
+      opacity: found ? 1 : 0.3, 
+      filter: found ? "none" : "grayscale(1)",
+      transition: "0.4s"
+    }}>
+      {/* 앞면 */}
+      <div style={{ position: "absolute", inset: 0 }}>
+        <PastelFront coin={coin} size={52} />
+      </div>
+      {/* 뒷면 (숨겨져 있지만 코드상으론 '사용 중'이라 에러 안 남) */}
+      <div style={{ position: "absolute", inset: 0, display: "none" }}>
+        <PastelBack coin={coin} size={52} />
+      </div>
+    </div>
+    
     <div style={{ textAlign: "center" }}>
       <div style={{ fontSize: 11, fontWeight: 700, color: found ? "#191F28" : "#C4CDD5" }}>{coin.year}년</div>
       <div style={{ fontSize: 10, color: "#8B95A1" }}>{coin.denom}원</div>
     </div>
-    {found
-      ? <Badge label={coin.grade} color={coin.gradeColor} />
-      : <span style={{ fontSize: 12, color: "#D1D6DB" }}>🔒</span>}
+    {found ? <Badge label={coin.grade} color={coin.gradeColor} /> : <span style={{ fontSize: 12, color: "#D1D6DB" }}>🔒</span>}
   </div>
 );
 
@@ -295,9 +311,6 @@ export default function MoneyArchiveDashboard() {
             <div style={{ textAlign: "center", marginBottom: 24 }}>
               {scanResult.isRare ? (
                 <>
-                  <div style={{ display: "flex", justifyContent: "center", marginBottom: 16 }}>
-                    <PastelFront coin={scanResult.coin} size={120} />
-                  </div>
                   <div style={{ fontSize: 13, fontWeight: 700, color: scanResult.coin.gradeColor, marginTop: 16, marginBottom: 4 }}>
                     🎉 희귀 동전 발견!
                   </div>
@@ -312,6 +325,7 @@ export default function MoneyArchiveDashboard() {
                 </>
               ) : (
                 <>
+                  {/* 이모지만 남기고 동전은 삭제 */}
                   <div style={{ fontSize: 56 }}>😅</div>
                   <div style={{ fontSize: 20, fontWeight: 900, color: "#191F28", marginTop: 12 }}>평범한 동전이에요</div>
                   <div style={{ fontSize: 14, color: "#8B95A1", marginTop: 6 }}>{scanResult.year}년 · 다시 찾아볼까요?</div>
