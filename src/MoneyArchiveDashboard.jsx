@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Tesseract from "tesseract.js";
 
 const COINS = [
@@ -12,7 +12,7 @@ const COINS = [
     { id: "c8", year: 2001, denom: 500, grade: "일반", gradeColor: "#90A4AE", price: 3000, pastel: "#ECEFF1", pastelDark: "#CFD8DC", icon: "⭕", iconBack: "◯" },
 ];
 
-const RARE_DB = { 1998: COINS[0], 1966: COINS[1], 1970: COINS[2] };
+const RARE_DB = COINS.reduce((acc, coin) => ({ ...acc, [coin.year]: coin }), {});
 
 const USER_NAME = "사용자";
 const doShare = async (isSuccess) => {
@@ -123,7 +123,14 @@ const GridCoin = ({ coin, found }) => (
 export default function MoneyArchiveDashboard() {
     const [scanning, setScanning] = useState(false);
     const [scanResult, setScanResult] = useState(null);
-    const [foundIds, setFoundIds] = useState([]);
+    const [foundIds, setFoundIds] = useState(() => {
+        const saved = localStorage.getItem("found_coin_ids");
+        return saved ? JSON.parse(saved) : [];
+    });
+
+    useEffect(() => {
+        localStorage.setItem("found_coin_ids", JSON.stringify(foundIds));
+    }, [foundIds]);
     const fileRef = useRef(null);
 
     const handleScan = async (e) => {
