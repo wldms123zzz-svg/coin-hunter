@@ -15,6 +15,44 @@ const COINS = [
 const RARE_DB = { 1998: COINS[0], 1966: COINS[1], 1970: COINS[2] };
 
 const USER_NAME = "사용자";
+// ─── 파스텔 동전 앞면 (아이콘만, 숫자 없음) ──────────────────────────────────
+const PastelFront = ({ coin, size }) => (
+  <svg width={size} height={size} viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id={`pf${coin.id}`} cx="40%" cy="35%" r="65%">
+        <stop offset="0%" stopColor="#fff" stopOpacity="0.95" />
+        <stop offset="100%" stopColor={coin.pastel} stopOpacity="1" />
+      </radialGradient>
+    </defs>
+    <circle cx="100" cy="100" r="96" fill={coin.pastelDark} opacity="0.45" />
+    <circle cx="100" cy="100" r="88" fill={`url(#pf${coin.id})`} />
+    <circle cx="100" cy="100" r="88" fill="none" stroke={coin.pastelDark} strokeWidth="2.5" opacity="0.6" />
+    <circle cx="100" cy="100" r="74" fill="none" stroke={coin.pastelDark} strokeWidth="1.5" opacity="0.35" />
+    <ellipse cx="78" cy="62" rx="24" ry="11" fill="rgba(255,255,255,0.65)" transform="rotate(-20 78 62)" />
+    {/* 아이콘만, 숫자 없음 */}
+    <text x="100" y="105" textAnchor="middle" fontSize="64" dominantBaseline="middle">{coin.icon}</text>
+  </svg>
+);
+
+// ─── 파스텔 동전 뒷면 ────────────────────────────────────────────────────────
+const PastelBack = ({ coin, size }) => (
+  <svg width={size} height={size} viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id={`pb${coin.id}`} cx="60%" cy="35%" r="65%">
+        <stop offset="0%" stopColor="#fff" stopOpacity="0.95" />
+        <stop offset="100%" stopColor={coin.pastel} stopOpacity="1" />
+      </radialGradient>
+    </defs>
+    <circle cx="100" cy="100" r="96" fill={coin.pastelDark} opacity="0.45" />
+    <circle cx="100" cy="100" r="88" fill={`url(#pb${coin.id})`} />
+    <circle cx="100" cy="100" r="88" fill="none" stroke={coin.pastelDark} strokeWidth="2.5" opacity="0.6" />
+    <circle cx="100" cy="100" r="74" fill="none" stroke={coin.pastelDark} strokeWidth="1.5" opacity="0.35" />
+    <ellipse cx="122" cy="62" rx="24" ry="11" fill="rgba(255,255,255,0.60)" transform="rotate(20 122 62)" />
+    <text x="100" y="105" textAnchor="middle" fontSize="64" dominantBaseline="middle">{coin.iconBack}</text>
+    <text x="100" y="162" textAnchor="middle" fontSize="16" fontWeight="700" letterSpacing="2"
+      fontFamily="'Pretendard',system-ui,sans-serif" fill={coin.gradeColor} opacity="0.5">{coin.year}</text>
+  </svg>
+);
 const doShare = async (isSuccess) => {
   const text = isSuccess
     ? `${USER_NAME}님이 행운의 동전을 찾았어요! 지갑에 있는 가능성들을 확인해보시겠어요?`
@@ -24,11 +62,6 @@ const doShare = async (isSuccess) => {
     else { await navigator.clipboard.writeText(text); alert("복사되었어요!"); }
   } catch (_) { }
 };
-
-
-
-
-
 // ─── 미니 동전 ───────────────────────────────────────────────────────────────
 const MiniCoin = ({ coin, size = 52, isFound = false }) => (
   <div style={{
@@ -147,7 +180,14 @@ export default function MoneyArchiveDashboard() {
         padding: "36px 24px 28px", display: "flex", flexDirection: "column", alignItems: "center", gap: 22,
         boxShadow: "0 2px 16px rgba(0,0,0,0.05)"
       }}>
-
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+          <PastelFront coin={COINS[0]} size={164} />
+          <div style={{
+            width: 72, height: 12, marginTop: 6,
+            background: "radial-gradient(ellipse, rgba(0,0,0,0.08) 0%, transparent 70%)",
+            borderRadius: "50%"
+          }} />
+        </div>
         <div style={{ textAlign: "center" }}>
           <div style={{ fontSize: 12, color: "#B0B8C1", fontWeight: 600, letterSpacing: 0.4, marginBottom: 8 }}>
             1998년 500원 현재 시세
@@ -255,7 +295,9 @@ export default function MoneyArchiveDashboard() {
             <div style={{ textAlign: "center", marginBottom: 24 }}>
               {scanResult.isRare ? (
                 <>
-
+                  <div style={{ display: "flex", justifyContent: "center", marginBottom: 16 }}>
+                    <PastelFront coin={scanResult.coin} size={120} />
+                  </div>
                   <div style={{ fontSize: 13, fontWeight: 700, color: scanResult.coin.gradeColor, marginTop: 16, marginBottom: 4 }}>
                     🎉 희귀 동전 발견!
                   </div>
