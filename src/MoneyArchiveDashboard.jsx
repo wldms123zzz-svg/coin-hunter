@@ -90,29 +90,39 @@ const Badge = ({ label, color }) => (
 );
 
 const GridCoin = ({ coin, found }) => (
-  <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 5, padding: "12px 4px" }}>
-    {/* 3D 회전을 위한 컨테이너 (여기에 앞뒤를 다 넣음) */}
+  <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 6, padding: "12px 4px" }}>
+    {/* 코인 아이콘 컨테이너 */}
     <div style={{ 
       position: "relative", width: 52, height: 52,
-      opacity: found ? 1 : 0.3, 
-      filter: found ? "none" : "grayscale(1)",
+      opacity: found ? 1 : 0.35, 
+      filter: found ? "none" : "grayscale(1) contrast(0.8)",
       transition: "0.4s"
     }}>
-      {/* 앞면 */}
       <div style={{ position: "absolute", inset: 0 }}>
         <PastelFront coin={coin} size={52} />
       </div>
-      {/* 뒷면 (숨겨져 있지만 코드상으론 '사용 중'이라 에러 안 남) */}
       <div style={{ position: "absolute", inset: 0, display: "none" }}>
         <PastelBack coin={coin} size={52} />
       </div>
     </div>
     
-    <div style={{ textAlign: "center" }}>
-      <div style={{ fontSize: 11, fontWeight: 700, color: found ? "#191F28" : "#C4CDD5" }}>{coin.year}년</div>
-      <div style={{ fontSize: 10, color: "#8B95A1" }}>{coin.denom}원</div>
+    <div style={{ textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
+      {/* 연도 (발견 시에만 공개) */}
+      <div style={{ fontSize: 11, fontWeight: 700, color: found ? "#191F28" : "#C4CDD5" }}>
+        {found ? `${coin.year}년` : "????년"}
+      </div>
+      
+      {/* 등급 배지 (미발견 시 무채색으로 힌트 제공) */}
+      <Badge 
+        label={coin.grade} 
+        color={found ? coin.gradeColor : "#E5E8EB"} 
+      />
+      
+      {/* 액면가 (발견 시에만 공개) */}
+      <div style={{ fontSize: 10, fontWeight: 500, color: found ? "#8B95A1" : "#F2F4F6" }}>
+        {found ? `${coin.denom}원` : "???원"}
+      </div>
     </div>
-    {found ? <Badge label={coin.grade} color={coin.gradeColor} /> : <span style={{ fontSize: 12, color: "#D1D6DB" }}>🔒</span>}
   </div>
 );
 
