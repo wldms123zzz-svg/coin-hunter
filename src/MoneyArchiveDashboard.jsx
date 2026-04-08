@@ -166,12 +166,14 @@ export default function MoneyArchiveDashboard() {
 
             {/* 헤더 */}
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "18px 22px 10px" }}>
-                <div style={{ width: 36 }} />
+                <button
+                    onClick={() => window.history.back()}
+                    style={{
+                        width: 36, height: 36, borderRadius: "50%", background: "rgba(0,0,0,0.05)",
+                        border: "none", cursor: "pointer", fontSize: 16, fontWeight: 700
+                    }}>✕</button>
                 <span style={{ fontSize: 17, fontWeight: 700, color: "#191F28" }}>희귀 동전 찾기</span>
-                <button style={{
-                    width: 36, height: 36, borderRadius: "50%", background: "rgba(0,0,0,0.05)",
-                    border: "none", cursor: "pointer", fontSize: 16, fontWeight: 700
-                }}>✕</button>
+                <div style={{ width: 36 }} />
             </div>
 
             {/* 히어로 */}
@@ -207,7 +209,7 @@ export default function MoneyArchiveDashboard() {
                     <span style={{ fontSize: 13, color: "#8B95A1", fontWeight: 500 }}>내 컬렉션</span>
                     <span style={{ fontSize: 14, fontWeight: 900, color: "#191F28" }}>{foundIds.length}</span>
                     <span style={{ fontSize: 13, color: "#D1D6DB" }}>/</span>
-                    <span style={{ fontSize: 13, color: "#8B95A1" }}>{COINS.length}개 해금</span>
+                    <span style={{ fontSize: 13, color: "#8B95A1" }}>{COINS.length}개 코인</span>
                 </div>
             </div>
 
@@ -273,7 +275,6 @@ export default function MoneyArchiveDashboard() {
                         <div style={{ textAlign: "center", marginBottom: 24 }}>
                             {scanResult.isRare ? (
                                 <>
-                                    <PastelCoin3D coin={scanResult.coin} size={120} spinning />
                                     <div style={{ fontSize: 13, fontWeight: 700, color: scanResult.coin.gradeColor, marginTop: 16, marginBottom: 4 }}>
                                         🎉 희귀 동전 발견!
                                     </div>
@@ -324,4 +325,3 @@ export default function MoneyArchiveDashboard() {
         </div>
     );
 }
-
