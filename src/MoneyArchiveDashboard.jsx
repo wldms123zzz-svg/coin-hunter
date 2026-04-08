@@ -54,6 +54,23 @@ const PastelBack = ({ coin, size }) => (
   </svg>
 );
 
+// ─── 3D 회전 래퍼 ────────────────────────────────────────────────────────────
+const PastelCoin3D = ({ coin, size = 160, spinning = true }) => (
+  <div style={{ width: size, height: size, perspective: size * 5 }}>
+    <div style={{
+      width: "100%", height: "100%", position: "relative", transformStyle: "preserve-3d",
+      animation: spinning ? "coinSpin 5s linear infinite" : "none",
+      filter: "drop-shadow(0 8px 20px rgba(0,0,0,0.08))"
+    }}>
+      <div style={{ position: "absolute", inset: 0, backfaceVisibility: "hidden" }}>
+        <PastelFront coin={coin} size={size} />
+      </div>
+      <div style={{ position: "absolute", inset: 0, backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}>
+        <PastelBack coin={coin} size={size} />
+      </div>
+    </div>
+  </div>
+);
 
 const doShare = async (isSuccess) => {
   const text = isSuccess
@@ -197,11 +214,11 @@ export default function MoneyArchiveDashboard() {
         boxShadow: "0 2px 16px rgba(0,0,0,0.05)"
       }}>
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-          <PastelFront coin={COINS[0]} size={164} />
+          <PastelCoin3D coin={COINS[0]} size={164} spinning />
           <div style={{
             width: 72, height: 12, marginTop: 6,
             background: "radial-gradient(ellipse, rgba(0,0,0,0.08) 0%, transparent 70%)",
-            borderRadius: "50%"
+            borderRadius: "50%", animation: "shadowFloat 5s linear infinite"
           }} />
         </div>
         <div style={{ textAlign: "center" }}>
@@ -354,7 +371,8 @@ export default function MoneyArchiveDashboard() {
       )}
 
       <style>{`
-
+        @keyframes coinSpin    { from{transform:rotateY(0deg)} to{transform:rotateY(360deg)} }
+        @keyframes shadowFloat { 0%,100%{transform:scaleX(1);opacity:.8} 50%{transform:scaleX(.65);opacity:.4} }
         @keyframes sheetUp     { from{transform:translateY(100%)} to{transform:translateY(0)} }
         @keyframes spin        { to{transform:rotate(360deg)} }
       `}</style>
