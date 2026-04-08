@@ -131,6 +131,7 @@ export default function MoneyArchiveDashboard() {
     if (!file) return;
 
     setScanning(true);
+    setScanResult(null); // 이전 결과 지우고 시작!
     try {
       // 1. 파일을 Base64 문자열로 변환 (Promise 기반)
       const base64Image = await new Promise((resolve, reject) => {
@@ -150,7 +151,8 @@ export default function MoneyArchiveDashboard() {
       if (!response.ok) throw new Error("API 요청 실패");
 
       const { year } = await response.json();
-      const yearNum = parseInt(year);
+      const cleanYear = year.replace(/[^0-9]/g, ''); // 숫자 말고는 다 지워버려!
+      const yearNum = parseInt(cleanYear);
 
       // 3. 결과 처리
       if (!yearNum || yearNum === 0 || isNaN(yearNum)) {
@@ -172,7 +174,7 @@ export default function MoneyArchiveDashboard() {
       alert("이미지 분석 중 오류가 발생했습니다.");
     } finally {
       setScanning(false);
-      if (e.target) e.target.value = "";
+      e.target.value = ""; // 입력창을 비워줘야 다음 스캔이 작동해!
     }
   };
 
